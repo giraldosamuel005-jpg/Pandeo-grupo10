@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Teoría del pandeo de columnas</title>
+<meta name="description" content="Fórmulas usadas por el simulador: Euler, NSR-10 F.2.5, Johnson, esbeltez, factor K y un ejemplo resuelto.">
+<meta property="og:title" content="Teoría del pandeo de columnas">
+<meta property="og:description" content="Fórmulas usadas por el simulador: Euler, NSR-10 F.2.5, Johnson, esbeltez, factor K y un ejemplo resuelto.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_CO">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<script>try{var t=localStorage.getItem("tema");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="salto" href="#contenido">Ir al contenido</a>
+<header class="top"><div class="wrap"><a class="marca" href="index.html">Pandeo NSR-10</a>
+<nav aria-label="Principal"><a href="index.html">Inicio</a><a href="simulador.html">Simulador</a><a href="teoria.html" aria-current="page">Teoría</a></nav>
+<button class="btn s" id="tema" type="button">Modo oscuro</button></div></header>
+<main id="contenido" class="wrap"><article class="doc">
+<h1>Teoría y fórmulas del simulador</h1>
+<p>Una columna corta falla porque el material fluye. Una columna larga falla antes, porque se curva de lado con un esfuerzo menor que la fluencia. La esbeltez dice cuál de los dos comportamientos manda.</p>
+<h2>Esbeltez</h2>
+<div class="eq"><math displaystyle="true"><mi>r</mi><mo>=</mo><msqrt><mfrac><msub><mi>I</mi><mtext>mín</mtext></msub><mi>A</mi></mfrac></msqrt><mspace width="3em"></mspace><mi>λ</mi><mo>=</mo><mfrac><mrow><mi>K</mi><mi>L</mi></mrow><mi>r</mi></mfrac></math></div>
+<p>Se usa la inercia menor porque la columna se pandea alrededor de su eje débil. El factor K convierte la longitud real en la longitud equivalente de una columna biarticulada.</p>
+<div class="tw"><table><thead><tr><th scope="col">Apoyos</th><th scope="col" class="n">K teórico</th><th scope="col" class="n">K de diseño</th></tr></thead><tbody>
+<tr><td>Empotrado – Libre</td><td class="n">2.00</td><td class="n">2.10</td></tr><tr><td>Articulado – Articulado</td><td class="n">1.00</td><td class="n">1.00</td></tr><tr><td>Empotrado – Articulado</td><td class="n">0.70</td><td class="n">0.80</td></tr><tr><td>Empotrado – Empotrado</td><td class="n">0.50</td><td class="n">0.65</td></tr></tbody></table></div>
+<h2>Esfuerzo de Euler</h2>
+<div class="eq"><math displaystyle="true"><msub><mi>F</mi><mi>e</mi></msub><mo>=</mo><mfrac><mrow><msup><mi>π</mi><mn>2</mn></msup><mi>E</mi></mrow><msup><mi>λ</mi><mn>2</mn></msup></mfrac></math></div>
+<p>Vale para columnas esbeltas. En columnas cortas predice esfuerzos mayores que la fluencia, que el material no puede alcanzar.</p>
+<h2>Modelo NSR-10 F.2.5</h2>
+<div class="eq">
+<math displaystyle="true"><mtext>si</mtext><mspace width="0.4em"></mspace><mi>λ</mi><mo>≤</mo><mn>4.71</mn><msqrt><mfrac><mi>E</mi><msub><mi>F</mi><mi>y</mi></msub></mfrac></msqrt><mo>:</mo><mspace width="1em"></mspace><msub><mi>F</mi><mi>cr</mi></msub><mo>=</mo><msup><mn>0.658</mn><mrow><msub><mi>F</mi><mi>y</mi></msub><mo>/</mo><msub><mi>F</mi><mi>e</mi></msub></mrow></msup><msub><mi>F</mi><mi>y</mi></msub></math>
+<math displaystyle="true"><mtext>si es mayor:</mtext><mspace width="1em"></mspace><msub><mi>F</mi><mi>cr</mi></msub><mo>=</mo><mn>0.877</mn><msub><mi>F</mi><mi>e</mi></msub></math>
+<math displaystyle="true"><msub><mi>P</mi><mi>cr</mi></msub><mo>=</mo><msub><mi>F</mi><mi>cr</mi></msub><mi>A</mi></math></div>
+<p>El primer caso es el rango inelástico y el segundo el elástico. El factor 0.877 reduce la carga de Euler para tener en cuenta las imperfecciones de una columna real.</p>
+<h2>Modelo de Johnson</h2>
+<div class="eq"><math displaystyle="true"><msub><mi>C</mi><mi>c</mi></msub><mo>=</mo><msqrt><mfrac><mrow><mn>2</mn><msup><mi>π</mi><mn>2</mn></msup><mi>E</mi></mrow><msub><mi>F</mi><mi>y</mi></msub></mfrac></msqrt><mspace width="2em"></mspace><msub><mi>F</mi><mi>cr</mi></msub><mo>=</mo><msub><mi>F</mi><mi>y</mi></msub><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mfrac><msup><mi>λ</mi><mn>2</mn></msup><mrow><mn>2</mn><msubsup><mi>C</mi><mi>c</mi><mn>2</mn></msubsup></mrow></mfrac><mo>)</mo></mrow></math></div>
+<p>La parábola se usa hasta C<sub>c</sub>; desde ahí sigue la curva de Euler. Ambas se encuentran en F<sub>y</sub>/2.</p>
+<h2>Euler truncado</h2>
+<p>Toma el menor entre el esfuerzo de Euler y la fluencia. La transición ocurre en λ = π√(E/F<sub>y</sub>).</p>
+<h2>Concreto reforzado</h2>
+<p>Es una simplificación: E<sub>c</sub> = 3900√f'c, E efectivo = 0.4E<sub>c</sub>/(1 + β<sub>dns</sub>) y un esfuerzo máximo de 0.85f'c, con el modelo de Euler truncado. No incluye el aporte del acero de refuerzo ni momentos.</p>
+<h2>Ejemplo resuelto</h2>
+<p>Columna rectangular de 50 × 100 mm en acero A36 (E = 200 000 MPa, F<sub>y</sub> = 250 MPa), biarticulada (K = 1). El área es 5000 mm², la inercia menor 1 041 667 mm⁴ y el radio de giro 14.43 mm. La transición está en λ = 133.2.</p>
+<div class="tw"><table><thead><tr><th scope="col">Cálculo</th><th scope="col" class="n">L = 3.0 m</th><th scope="col" class="n">L = 1.5 m</th></tr></thead><tbody id="ej"></tbody></table></div>
+<p>Con Euler puro, reducir la longitud a la mitad multiplicaría la carga por 4. Aquí se multiplica por <span id="ejf"></span>, porque la columna corta ya está en el rango inelástico.</p>
+<p><a class="btn" href="simulador.html?L=3&amp;k=t&amp;ap=1&amp;m=0&amp;mod=0&amp;s=0&amp;b=50&amp;h=100">Abrir este ejemplo en el simulador</a></p>
+<h2>Alcance</h2>
+<ul><li>Columna recta ideal con carga axial centrada.</li><li>No verifica pandeo local, torsional ni flexo-torsional.</li><li>No incluye momentos, excentricidad ni efectos de segundo orden.</li><li>No reemplaza el diseño según el texto vigente del Reglamento NSR-10.</li></ul>
+</article></main>
+<footer class="pie"><div class="wrap"><p>Grupo 10 · Mecánica de sólidos · Universidad Santiago de Cali</p>
+<p>Modelo con fines académicos: columna ideal, carga axial centrada, sin imperfecciones iniciales, sin pandeo local ni torsional. Verificar siempre contra el texto vigente del Reglamento NSR-10.</p></div></footer>
+<script src="js/site.js"></script>
+<script src="js/calc.js"></script>
+<script>
+(() => {
+  const r = l => Pandeo.resolver("Rectangular maciza", { b: 50, h: 100 }, l, 1, 200000, 250, Pandeo.MODELOS[0]), a = r(3000), b = r(1500);
+  document.getElementById("ej").innerHTML = [["λ = KL/r", x => x.lam.toFixed(1)], ["Rango", x => x.elastico ? "Elástico" : "Inelástico"], ["Fe (MPa)", x => x.Fe.toFixed(2)], ["Fcr (MPa)", x => x.Fcr.toFixed(2)], ["Pcr (kN)", x => x.Pcr.toFixed(1)]]
+    .map(([n, f]) => `<tr><td>${n}</td><td class="n">${f(a)}</td><td class="n">${f(b)}</td></tr>`).join("");
+  document.getElementById("ejf").textContent = (b.Pcr / a.Pcr).toFixed(2);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pandeo de columnas NSR-10</title>
+<meta name="description" content="Simulador de la transición de pandeo elástico a inelástico en columnas. Grupo 10, Universidad Santiago de Cali.">
+<meta property="og:title" content="Pandeo de columnas NSR-10">
+<meta property="og:description" content="Simulador de la transición de pandeo elástico a inelástico en columnas. Grupo 10, Universidad Santiago de Cali.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_CO">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<script>try{var t=localStorage.getItem("tema");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="salto" href="#contenido">Ir al contenido</a>
+<header class="top"><div class="wrap"><a class="marca" href="index.html">Pandeo NSR-10</a>
+<nav aria-label="Principal"><a href="index.html" aria-current="page">Inicio</a><a href="simulador.html">Simulador</a><a href="teoria.html">Teoría</a></nav>
+<button class="btn s" id="tema" type="button">Modo oscuro</button></div></header>
+<main id="contenido" class="wrap">
+<section class="hero">
+  <div>
+    <h1>¿Cuánta carga aguanta una columna antes de pandearse?</h1>
+    <p>Depende de su longitud, de cómo está apoyada y de la forma de su sección. Este simulador calcula la carga crítica y muestra si la columna falla en el rango elástico o en el inelástico.</p>
+    <div class="acc"><a class="btn p" href="simulador.html">Abrir el simulador</a><a class="btn" href="teoria.html">Ver la teoría</a></div>
+  </div>
+  <div class="lamina">
+    <label class="f"><span class="rh">Longitud de la columna <output id="hlOut">4.0 m</output></span><input type="range" id="hl" min="1" max="8" step="0.1" value="4"></label>
+    <div id="columnas"></div>
+    <p class="note">Tubo de acero A36 de 100 × 5 mm, K teórico, modelo NSR-10 F.2.5. La deformada está exagerada.</p>
+  </div>
+</section>
+<section class="sec"><h2>Qué se puede analizar</h2><div class="tres">
+  <div><h3>Esbeltez y transición</h3><p>Ubica la columna sobre la curva de esfuerzo crítico y la compara con la hipérbola de Euler y la fluencia.</p></div>
+  <div><h3>Condiciones de apoyo</h3><p>Compara los cuatro casos clásicos con K teórico o con K recomendado de diseño.</p></div>
+  <div><h3>Geometría con igual área</h3><p>Muestra cuánto cambia la capacidad al redistribuir la misma cantidad de material.</p></div>
+  <div><h3>Carga contra longitud</h3><p>Traza cómo cae la carga crítica a medida que la columna se alarga.</p></div>
+  <div><h3>Columna dañada por sismo</h3><p>Simula pérdida de sección y de arriostramiento, y calcula la capacidad que se pierde.</p></div>
+  <div><h3>Resultados para el informe</h3><p>Descarga los datos en CSV, imprime o guarda en PDF, y comparte un enlace con el caso ya cargado.</p></div>
+</div></section>
+</main>
+<footer class="pie"><div class="wrap"><p>Grupo 10 · Mecánica de sólidos · Universidad Santiago de Cali</p>
+<p>Modelo con fines académicos: columna ideal, carga axial centrada, sin imperfecciones iniciales, sin pandeo local ni torsional. Verificar siempre contra el texto vigente del Reglamento NSR-10.</p></div></footer>
+<script src="js/site.js"></script>
+<script src="js/calc.js"></script>
+<script src="js/home.js"></script>
+</body>
+</html>

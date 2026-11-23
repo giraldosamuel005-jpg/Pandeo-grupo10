@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Simulador de pandeo NSR-10</title>
+<meta name="description" content="Calcule la carga crítica de una columna según NSR-10, Euler-Johnson o Euler truncado.">
+<meta property="og:title" content="Simulador de pandeo NSR-10">
+<meta property="og:description" content="Calcule la carga crítica de una columna según NSR-10, Euler-Johnson o Euler truncado.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_CO">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<script>try{var t=localStorage.getItem("tema");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="salto" href="#contenido">Ir al contenido</a>
+<header class="top"><div class="wrap"><a class="marca" href="index.html">Pandeo NSR-10</a>
+<nav aria-label="Principal"><a href="index.html">Inicio</a><a href="simulador.html" aria-current="page">Simulador</a><a href="teoria.html">Teoría</a></nav>
+<button class="btn s" id="tema" type="button">Modo oscuro</button></div></header>
+<main id="contenido" class="wrap">
+<div class="cab">
+  <h1>Simulador de transición de pandeo elástico a inelástico (NSR-10)</h1>
+  <div class="herr"><button class="btn s" id="bLink" type="button">Copiar enlace con estos datos</button><button class="btn s" id="bCsv" type="button">Descargar CSV</button><button class="btn s" id="bPrint" type="button">Imprimir o guardar PDF</button><span id="aviso" role="status"></span></div>
+</div>
+<div id="barra" aria-hidden="true"></div>
+<div class="app">
+<form class="ent" id="entradas" autocomplete="off" aria-label="Datos de entrada">
+  <fieldset class="g"><legend>1. Longitud y apoyos</legend>
+    <label class="f">Longitud de la columna L (m)<input type="number" inputmode="decimal" id="L" min="0.2" max="30" step="0.1" value="3"></label>
+    <div class="f">Valores de K<div class="seg" role="group" aria-label="Valores de K"><button type="button" id="kT" aria-pressed="true">Teórico</button><button type="button" id="kD" aria-pressed="false">De diseño</button></div></div>
+    <label class="f">Condición de apoyo<select id="apoyo"></select></label>
+    <div class="mono">K = <b id="kOut"></b></div>
+  </fieldset>
+  <fieldset class="g"><legend>2. Material</legend>
+    <label class="f">Material<select id="mat"></select></label>
+    <div class="g" id="steelBox">
+      <label class="f">E (MPa)<input type="number" inputmode="decimal" id="E" min="10000" max="250000" step="1000" value="200000"></label>
+      <label class="f">Fy (MPa)<input type="number" inputmode="decimal" id="Fy" min="100" max="700" step="5" value="250"></label>
+    </div>
+    <div class="g" id="concBox" hidden>
+      <label class="f">f'c (MPa)<input type="number" inputmode="decimal" id="fc" min="14" max="70" step="1" value="21"></label>
+      <label class="f"><span class="rh">βdns (sostenida / total) <output id="bdOut"></output></span><input type="range" id="bd" min="0" max="1" step="0.05" value="0.6"></label>
+      <div class="note mono" id="concNote"></div>
+    </div>
+    <label class="f">Modelo de esfuerzo crítico<select id="modelo"></select></label>
+  </fieldset>
+  <fieldset class="g"><legend>3. Sección transversal</legend>
+    <label class="f">Tipo de sección<select id="tipo"></select></label>
+    <div class="g" id="dimsBox"></div>
+  </fieldset>
+  <fieldset class="g"><legend>4. Demanda (opcional)</legend>
+    <label class="f">Carga axial Pu (kN)<input type="number" inputmode="decimal" id="Pu" min="0" max="100000" step="10" value="0"></label>
+  </fieldset>
+</form>
+<div class="res">
+  <div class="msg err" id="errBox" role="alert" hidden>El espesor t debe ser menor que la mitad de la menor dimensión exterior.</div>
+  <div id="results">
+    <div id="resumen"></div>
+    <div id="principal"></div>
+    <div id="metrics"></div>
+    <div id="msgs"></div>
+    <div class="panel">
+      <div id="tabs" role="tablist" aria-label="Análisis"><button role="tab" type="button">Curva Fcr vs KL/r</button><button role="tab" type="button">Apoyos (K)</button><button role="tab" type="button">Geometría (igual área)</button><button role="tab" type="button">Pcr vs longitud</button><button role="tab" type="button">Sección dañada (sismo)</button></div>
+      <div class="tabpanel" role="tabpanel"><div class="plot" id="plot0"></div></div>
+      <div class="tabpanel" role="tabpanel" hidden><div class="tw" id="tbl1"></div><h3>Carga crítica según condición de apoyo</h3><div class="plot" id="plot1"></div></div>
+      <div class="tabpanel" role="tabpanel" hidden><p>Mismo material, longitud, K y <strong>misma área</strong>: solo cambia la distribución del material.</p>
+        <div class="ctr"><label class="f"><span class="rh">Relación D/t (o b/t) de los tubos <output id="razonOut"></output></span><input type="range" id="razon" min="8" max="60" step="1" value="25"></label></div>
+        <div class="tw" id="tbl2"></div><div class="plot" id="plot2"></div></div>
+      <div class="tabpanel" role="tabpanel" hidden><div class="plot" id="plot3"></div></div>
+      <div class="tabpanel" role="tabpanel" hidden><p>Compara la columna íntegra con una que perdió sección, arriostramiento (cambio de K) o ambos, como tras un sismo.</p>
+        <div class="ctr"><label class="f"><span class="rh">Pérdida de sección <output id="pctOut"></output></span><input type="range" id="pct" min="0" max="40" step="1" value="15"><span class="note">Reduce las dimensiones; en tubos, el espesor.</span></label><label class="f">Apoyo tras el daño<select id="apoyoD"></select></label></div>
+        <div class="tw" id="tbl4"></div><div><span class="k">Pérdida de capacidad crítica</span><div class="loss" id="lossOut"></div></div><div class="plot" id="plot4"></div></div>
+    </div>
+  </div>
+</div>
+</div>
+</main>
+<footer class="pie"><div class="wrap"><p>Grupo 10 · Mecánica de sólidos · Universidad Santiago de Cali</p>
+<p>Modelo con fines académicos: columna ideal, carga axial centrada, sin imperfecciones iniciales, sin pandeo local ni torsional. Verificar siempre contra el texto vigente del Reglamento NSR-10.</p></div></footer>
+<script src="js/site.js"></script>
+<script src="js/plotly-basic.min.js"></script>
+<script src="js/calc.js"></script>
+<script src="js/sim.js"></script>
+</body>
+</html>

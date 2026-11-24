@@ -1,5 +1,5 @@
 /* Guarda el sitio para abrirlo sin conexión. Con conexión siempre usa la versión más reciente. */
-const CACHE = "pandeo-v1";
+const CACHE = "pandeo-v2";
 const ARCHIVOS = ["./", "index.html", "simulador.html", "teoria.html", "css/styles.css", "js/calc.js", "js/site.js", "js/home.js", "js/sim.js", "js/plotly-basic.min.js",
   "fonts/archivo.woff2", "fonts/source-sans-3.woff2", "fonts/jetbrains-mono.woff2", "favicon.svg", "manifest.webmanifest"];
 self.addEventListener("install", e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(ARCHIVOS)).then(() => self.skipWaiting())));
@@ -11,5 +11,8 @@ self.addEventListener("fetch", e => {
   e.respondWith(fetch(e.request).then(r => {
     if (r.ok && !url.search) { const c = r.clone(); e.waitUntil(caches.open(CACHE).then(k => k.put(e.request, c))); }
     return r;
-  }).catch(() => caches.match(e.request, { ignoreSearch: true }).then(r => r || Response.error())));
+  }).catch(async () =>
+    (await caches.match(e.request, { ignoreSearch: true })) ||
+    (await caches.match(url.origin + url.pathname + ".html")) ||   // direcciones sin ".html"
+    Response.error()));
 });

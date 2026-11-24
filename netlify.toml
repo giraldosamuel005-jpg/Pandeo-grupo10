@@ -1,0 +1,6 @@
+[build]
+  publish = "."
+
+# Deja los enlaces tal como están en el código
+[build.processing.html]
+  pretty_urls = false
